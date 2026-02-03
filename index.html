@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamp Login - GitHub Fix</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --lamp-off: #333;
+            --lamp-on: #ffd700;
+        }
+
+        body {
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: sans-serif;
+        }
+
+        .container {
+            width: 320px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Lamp Design */
+        .lamp-head {
+            width: 60px;
+            height: 45px;
+            background: var(--lamp-off);
+            border-radius: 30px 30px 5px 5px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            transition: 0.3s;
+        }
+
+        .light-cone {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 300px;
+            background: linear-gradient(to bottom, rgba(255, 215, 0, 0.3), transparent);
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+            opacity: 0;
+            transition: 0.4s;
+            pointer-events: none;
+        }
+
+        /* Logic: Turn on when input is clicked */
+        .container:focus-within .light-cone {
+            opacity: 1;
+        }
+
+        .container:focus-within .lamp-head {
+            background: var(--lamp-on);
+            box-shadow: 0 0 20px var(--lamp-on);
+        }
+
+        /* Form Styling */
+        form {
+            background: #1e1e1e;
+            padding: 40px 25px;
+            border-radius: 20px;
+            margin-top: -10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #2a2a2a;
+        }
+
+        h2 { color: white; margin-bottom: 20px; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #2a2a2a;
+            border: 2px solid #333;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        input:focus { border-color: var(--lamp-on); }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--lamp-on);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="lamp-head"></div>
+        <div class="light-cone"></div>
+        
+        <form onsubmit="return false">
+            <h2>Login</h2>
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">LOGIN</button>
+        </form>
+    </div>
+
+</body>
+</html>
