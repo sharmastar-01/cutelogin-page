@@ -3,97 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cute Lamp Login</title>
+    <title>Cute Lamp Login UI</title>
     <style>
         :root {
             --glow-color: #ffd700;
-            --bg-color: #121212;
-            --lamp-color: #333;
+            --bg-color: #1a1a1b;
+            --form-bg: #252526;
+            --text-color: #ffffff;
         }
 
         body {
             background-color: var(--bg-color);
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
         }
 
-        .login-container {
+        .container {
             position: relative;
-            width: 320px;
-        }
-
-        /* --- Lamp Structure --- */
-        .lamp-box {
-            position: relative;
-            width: 100%;
+            width: 350px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: -15px;
-            z-index: 10;
+        }
+
+        /* --- THE LAMP --- */
+        .lamp-wrapper {
+            position: relative;
+            width: 80px;
+            height: 70px;
+            z-index: 2;
+            margin-bottom: -10px;
         }
 
         .lamp-head {
-            width: 60px;
-            height: 45px;
-            background: var(--lamp-color);
-            border-radius: 40% 40% 5px 5px;
             position: relative;
+            width: 100%;
+            height: 100%;
+            background: #333;
+            border-radius: 40px 40px 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
         }
 
-        /* The Pull String */
-        .lamp-head::after {
-            content: '';
-            position: absolute;
-            right: 15px;
-            top: 45px;
-            width: 2px;
-            height: 20px;
-            background: #555;
+        /* Lamp Eyes */
+        .eye-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .eye {
+            width: 10px;
+            height: 10px;
+            background: #000;
+            border-radius: 50%;
+            position: relative;
+            transition: height 0.1s;
+        }
+
+        /* Blinking Animation */
+        .blink {
+            height: 2px !important;
         }
 
         /* The Light Beam */
-        .light {
-            width: 120px;
-            height: 180px;
-            background: linear-gradient(to bottom, rgba(255, 215, 0, 0.4), transparent);
-            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        .light-beam {
             position: absolute;
-            top: 45px;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 250px;
+            background: linear-gradient(to bottom, rgba(255, 215, 0, 0.3), transparent);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
         }
 
-        /* --- Form Styling --- */
+        /* --- THE FORM --- */
         .login-form {
-            background: #1e1e1e;
-            padding: 50px 30px 30px;
+            background: var(--form-bg);
+            width: 100%;
+            padding: 40px 30px;
             border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             transition: all 0.4s ease;
-            border: 1px solid #2a2a2a;
+            border: 1px solid #333;
         }
 
         .login-form h2 {
-            color: #fff;
-            margin: 0 0 25px;
+            color: var(--text-color);
+            margin-bottom: 25px;
             font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 2px solid #333;
-            background: #2a2a2a;
-            color: #fff;
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid #3c3c3c;
+            background: #1e1e1e;
+            color: white;
+            font-size: 14px;
             outline: none;
             box-sizing: border-box;
             transition: border-color 0.3s;
@@ -105,59 +129,84 @@
 
         .login-btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: linear-gradient(135deg, #ffd700, #ff8c00);
             border: none;
-            border-radius: 8px;
-            color: #000;
-            font-weight: 700;
+            border-radius: 10px;
+            color: #1a1a1a;
+            font-weight: bold;
+            font-size: 16px;
             cursor: pointer;
-            margin-top: 15px;
-            transition: transform 0.2s;
+            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .login-btn:hover {
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
         }
 
-        .forgot {
+        .forgot-pass {
             display: block;
-            margin-top: 15px;
-            color: #777;
+            margin-top: 20px;
+            color: #888;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 13px;
         }
 
-        /* --- Interactions --- */
-
-        /* Light turns on when an input is focused */
-        .login-container:focus-within .light {
+        /* --- LOGIC: TRIGGER LIGHT --- */
+        .container:focus-within .light-beam {
             opacity: 1;
         }
 
-        /* The form glows slightly when the lamp is "on" */
-        .login-container:focus-within .login-form {
-            border-color: rgba(255, 215, 0, 0.3);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+        .container:focus-within .login-form {
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
         }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="lamp-box">
-            <div class="lamp-head"></div>
-            <div class="light"></div>
+    <div class="container">
+        <div class="lamp-wrapper">
+            <div class="lamp-head">
+                <div class="eye-container">
+                    <div class="eye" id="left-eye"></div>
+                    <div class="eye" id="right-eye"></div>
+                </div>
+            </div>
+            <div class="light-beam"></div>
         </div>
 
         <form class="login-form" onsubmit="event.preventDefault()">
             <h2>Welcome Back</h2>
-            <input type="text" placeholder="Username" required>
-            <input type="password" placeholder="Password" required>
+            <div class="input-group">
+                <input type="text" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Password" required>
+            </div>
             <button type="submit" class="login-btn">Login</button>
-            <a href="#" class="forgot">Forgot Password?</a>
+            <a href="#" class="forgot-pass">Forgot Password?</a>
         </form>
     </div>
 
+    <script>
+        // Blinking logic
+        const eyes = document.querySelectorAll('.eye');
+        
+        function blink() {
+            eyes.forEach(eye => eye.classList.add('blink'));
+            setTimeout(() => {
+                eyes.forEach(eye => eye.classList.remove('blink'));
+            }, 150);
+            
+            // Random blink interval between 2 and 5 seconds
+            setTimeout(blink, Math.random() * 3000 + 2000);
+        }
+
+        // Start blinking
+        blink();
+    </script>
 </body>
 </html>
