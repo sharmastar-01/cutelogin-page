@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cute Lamp Login</title>
+    <style>
+        :root {
+            --glow-color: #ffd700;
+            --bg-color: #121212;
+            --lamp-color: #333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            position: relative;
+            width: 320px;
+        }
+
+        /* --- Lamp Structure --- */
+        .lamp-box {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: -15px;
+            z-index: 10;
+        }
+
+        .lamp-head {
+            width: 60px;
+            height: 45px;
+            background: var(--lamp-color);
+            border-radius: 40% 40% 5px 5px;
+            position: relative;
+        }
+
+        /* The Pull String */
+        .lamp-head::after {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 45px;
+            width: 2px;
+            height: 20px;
+            background: #555;
+        }
+
+        /* The Light Beam */
+        .light {
+            width: 120px;
+            height: 180px;
+            background: linear-gradient(to bottom, rgba(255, 215, 0, 0.4), transparent);
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+            position: absolute;
+            top: 45px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        /* --- Form Styling --- */
+        .login-form {
+            background: #1e1e1e;
+            padding: 50px 30px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transition: all 0.4s ease;
+            border: 1px solid #2a2a2a;
+        }
+
+        .login-form h2 {
+            color: #fff;
+            margin: 0 0 25px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #333;
+            background: #2a2a2a;
+            color: #fff;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--glow-color);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .forgot {
+            display: block;
+            margin-top: 15px;
+            color: #777;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        /* --- Interactions --- */
+
+        /* Light turns on when an input is focused */
+        .login-container:focus-within .light {
+            opacity: 1;
+        }
+
+        /* The form glows slightly when the lamp is "on" */
+        .login-container:focus-within .login-form {
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="lamp-box">
+            <div class="lamp-head"></div>
+            <div class="light"></div>
+        </div>
+
+        <form class="login-form" onsubmit="event.preventDefault()">
+            <h2>Welcome Back</h2>
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit" class="login-btn">Login</button>
+            <a href="#" class="forgot">Forgot Password?</a>
+        </form>
+    </div>
+
+</body>
+</html>
